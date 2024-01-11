@@ -17,7 +17,9 @@ end
 
 post '/memos' do
   memos = read_memos
-  memos[params[:title]] = params[:content]
+  title = sanitize_text(params[:title])
+  content = sanitize_text(params[:content])
+  memos[title] = content
   write_memos(memos)
   redirect '/memos'
 end
@@ -25,8 +27,8 @@ end
 patch '/memos' do
   memos = read_memos
   old_title = params[:old_title]
-  new_title = params[:new_title]
-  new_content = params[:new_content]
+  new_title = sanitize_text(params[:new_title])
+  new_content = sanitize_text(params[:new_content])
   memos[new_title] = memos.delete(old_title)
   memos[new_title] = new_content
   write_memos(memos)
@@ -44,9 +46,14 @@ end
 get '/memos/:title' do
   memos = read_memos
   title = params[:title]
-  @title = title
-  @content = memos[title]
-  erb :show_memos
+
+  if memos.key?(title)
+    @title = title
+    @content = memos[title]
+    erb :show_memos
+  else
+    erb :not_found
+  end
 end
 
 get '/new' do
@@ -56,9 +63,18 @@ end
 get '/edit' do
   memos = read_memos
   title = params[:title]
-  @title = title
-  @content = memos[title]
-  erb :edit_memos
+
+  if memos.key?(title)
+    @title = title
+    @content = memos[title]
+    erb :edit_memos
+  else
+    erb :not_found
+  end
+end
+
+not_found do
+  erb :not_found
 end
 
 def read_memos
@@ -77,4 +93,8 @@ end
 
 def read_memos_file_path
   File.join(Dir.pwd, 'save_memos.json')
+end
+
+def sanitize_text(text)
+  text.gsub(/[<>?\/\\]/, '_')
 end
