@@ -1,0 +1,6 @@
+<form method="post" action="/memos">
+  <input type="text" id="title" name="new_title" value="<%= @title %>">
+  <textarea id="content" name="new_content"><%= @content %></textarea>
+  <input type="hidden" value="<%= @title %>" name="old_title">
+  <input type="submit" value="変更" id="edit" name="edit">
+</form>
