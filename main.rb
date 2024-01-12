@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'net/http'
@@ -7,10 +9,10 @@ get '/memos' do
   memos = read_memos
 
   @memos = ''
-  memos.each do |title, _|
-    @memos = @memos  + "<ul>"
-    @memos = @memos + "<li><a href=\"/memos/#{title}\">#{title}</a></li>"
-    @memos = @memos + "</ul>"
+  memos.each_key do |title|
+    @memos += '<ul>'
+    @memos += "<li><a href=\"/memos/#{title}\">#{title}</a></li>"
+    @memos += '</ul>'
   end
   erb :memos
 end
@@ -96,5 +98,5 @@ def read_memos_file_path
 end
 
 def sanitize_text(text)
-  text.gsub(/[<>?\/\\]/, '_')
+  text.gsub(%r{[<>?/\\]}, '_')
 end

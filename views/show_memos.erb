@@ -1,7 +1,7 @@
 <p><%= @title %></p>
 <p><%= @content %></p>
-<a href="/edit?title=<%= @title %>"><input type="button" value="変更" id="edit" name="edit"></a>
+<p><a href="/edit?title=<%= @title %>"><input type="button" value="変更" id="edit" name="edit"></a></p>
 <form method="post" action="/memos?title=<%= @title %>">
-  <input type="hidden" name="_method" value="DELETE">
-  <input type="submit" value="削除" id="del" name="del">
+  <p><input type="hidden" name="_method" value="DELETE"></p>
+  <p><input type="submit" value="削除" id="del" name="del"></p>
 </form>
