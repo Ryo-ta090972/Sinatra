@@ -1,6 +1,7 @@
 # SinatraでシンプルなWebアプリを作ろう
 
 プラクティス「Sinatra を使ってWebアプリケーションの基本を理解する」の課題提出用のリポジトリです。
+
 課題のメモアプリを作成しましたので、ご確認お願いします。
 
 # 要件
@@ -79,7 +80,7 @@ Puma starting in single mode...
 * Listening on http://[::1]:4567
 Use Ctrl-C to stop
 
-#何もせず手順8に移行
+# この画面には触れず手順8を行う
 ```
 
 
