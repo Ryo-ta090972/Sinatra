@@ -87,10 +87,7 @@ end
 def write_memos(memos)
   path = read_memos_file_path
   memos_json = JSON.generate(memos)
-
-  File.open(path, 'w') do |file|
-    file.write(memos_json)
-  end
+  File.write(path, memos_json)
 end
 
 def read_memos_file_path
