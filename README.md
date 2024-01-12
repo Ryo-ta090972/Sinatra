@@ -11,7 +11,7 @@
 1. `git clone` をしてください。
 
 ```
-$ git clone https://github.com/自分のアカウント名/memo_app.git
+$ git clone -b memo https://github.com/自分のアカウント名/memo_app.git
 ```
 
 2. Bundlerのインストールしてください。
