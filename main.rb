@@ -6,73 +6,74 @@ require 'net/http'
 require 'json'
 
 get '/memos' do
-  memos = read_memos
-
-  @memos = ''
-  memos.each_key do |title|
-    @memos += '<ul>'
-    @memos += "<li><a href=\"/memos/#{title}\">#{title}</a></li>"
-    @memos += '</ul>'
-  end
+  @memos = read_memos
   erb :memos
 end
 
 post '/memos' do
   memos = read_memos
-  title = sanitize_text(params[:title])
-  content = sanitize_text(params[:content])
-  memos[title] = content
+  uuid = SecureRandom.uuid
+
+  memos[uuid] = {
+    title: params[:title],
+    content: params[:content]
+  }
+
   write_memos(memos)
   redirect '/memos'
 end
 
-patch '/memos' do
+get '/memos/:id' do
   memos = read_memos
-  old_title = params[:old_title]
-  new_title = sanitize_text(params[:new_title])
-  new_content = sanitize_text(params[:new_content])
-  memos[new_title] = memos.delete(old_title)
-  memos[new_title] = new_content
-  write_memos(memos)
-  redirect '/memos'
-end
+  id = params[:id]
 
-delete '/memos' do
-  memos = read_memos
-  targeted_title = params[:title]
-  deleted_memos = memos.delete_if { |title, _| title == targeted_title }
-  write_memos(deleted_memos)
-  redirect '/memos'
-end
-
-get '/memos/:title' do
-  memos = read_memos
-  title = params[:title]
-
-  if memos.key?(title)
-    @title = title
-    @content = memos[title]
+  if memos.key?(id)
+    @id = id
+    @title = memos[id]['title']
+    @content = memos[id]['content']
     erb :show_memos
   else
     erb :not_found
   end
 end
 
-get '/new' do
-  erb :new
-end
-
-get '/edit' do
+get '/memos/:id/memo' do
   memos = read_memos
-  title = params[:title]
+  id = params[:id]
 
-  if memos.key?(title)
-    @title = title
-    @content = memos[title]
+  if memos.key?(id)
+    @id = id
+    @old_title = memos[id]['title']
+    @old_content = memos[id]['content']
     erb :edit_memos
   else
     erb :not_found
   end
+end
+
+patch '/memos/:id/memo' do
+  memos = read_memos
+  id = params[:id]
+
+  memos[id] = {
+    title: params[:new_title],
+    content: params[:new_content]
+  }
+
+  write_memos(memos)
+  redirect '/memos'
+end
+
+delete '/memos/:id/memo' do
+  memos = read_memos
+  targeted_id = params[:id]
+  deleted_memos = memos.delete_if { |id, _| id == targeted_id }
+  write_memos(deleted_memos)
+  redirect '/memos'
+end
+
+get '/new' do
+  erb :new
 end
 
 not_found do
@@ -94,6 +95,8 @@ def read_memos_file_path
   File.join(Dir.pwd, 'save_memos.json')
 end
 
-def sanitize_text(text)
-  text.gsub(%r{[<>?/\\]}, '_')
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
 end
