@@ -1,5 +1,4 @@
-<a href="/new"><input type="button" value="追加" id="addition" name="addition"></a>
-
+<a href="/memos/new"><input type="button" value="追加" id="addition" name="addition"></a>
 <ul>
   <% @memos.each_key do |id| %>
     <li><a href="/memos/<%= id %>"><%= h @memos[id]['title'] %></a></li>

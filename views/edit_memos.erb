@@ -1,4 +1,4 @@
- <form method="post" action="/memos/<%= @id %>/memo">
+ <form method="post" action="/memos/<%= @id %>">
   <input type="hidden" name="_method" value="PATCH">
   <p><input type="text" id="new_title" name="new_title" value="<%= h @old_title %>" required></p>
   <p><textarea id="new_content" name="new_content"><%= h @old_content %></textarea></p>

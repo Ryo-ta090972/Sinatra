@@ -23,6 +23,10 @@ post '/memos' do
   redirect '/memos'
 end
 
+get '/memos/new' do
+  erb :new
+end
+
 get '/memos/:id' do
   memos = read_memos
   id = params[:id]
@@ -37,21 +41,7 @@ get '/memos/:id' do
   end
 end
 
-get '/memos/:id/memo' do
-  memos = read_memos
-  id = params[:id]
-
-  if memos.key?(id)
-    @id = id
-    @old_title = memos[id]['title']
-    @old_content = memos[id]['content']
-    erb :edit_memos
-  else
-    erb :not_found
-  end
-end
-
-patch '/memos/:id/memo' do
+patch '/memos/:id' do
   memos = read_memos
   id = params[:id]
 
@@ -64,16 +54,26 @@ patch '/memos/:id/memo' do
   redirect '/memos'
 end
 
-delete '/memos/:id/memo' do
+delete '/memos/:id' do
   memos = read_memos
   targeted_id = params[:id]
-  deleted_memos = memos.delete_if { |id, _| id == targeted_id }
+  deleted_memos = memos.except(targeted_id)
   write_memos(deleted_memos)
   redirect '/memos'
 end
 
-get '/new' do
-  erb :new
+get '/memos/:id/edit' do
+  memos = read_memos
+  id = params[:id]
+
+  if memos.key?(id)
+    @id = id
+    @old_title = memos[id]['title']
+    @old_content = memos[id]['content']
+    erb :edit_memos
+  else
+    erb :not_found
+  end
 end
 
 not_found do
