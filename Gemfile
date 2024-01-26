@@ -8,5 +8,10 @@ gem "sinatra", "~> 3.1"
 gem "puma"
 gem "sinatra-contrib"
 gem "webrick"
-gem 'erb_lint', require: false
-gem "debug", ">= 1.0.0"
+
+group :development do
+  gem 'rubocop-fjord', require: false
+  gem 'rubocop-rails', require: false
+  gem 'erb_lint', require: false
+  gem "debug", ">= 1.0.0"
+end

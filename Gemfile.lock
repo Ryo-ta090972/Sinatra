@@ -1,0 +1,150 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actionview (7.1.2)
+      activesupport (= 7.1.2)
+      builder (~> 3.1)
+      erubi (~> 1.11)
+      rails-dom-testing (~> 2.2)
+      rails-html-sanitizer (~> 1.6)
+    activemodel (7.1.2)
+      activesupport (= 7.1.2)
+    activerecord (7.1.2)
+      activemodel (= 7.1.2)
+      activesupport (= 7.1.2)
+      timeout (>= 0.4.0)
+    activesupport (7.1.2)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      mutex_m
+      tzinfo (~> 2.0)
+    ast (2.4.2)
+    base64 (0.2.0)
+    better_html (2.0.2)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
+    bigdecimal (3.1.5)
+    builder (3.2.4)
+    concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
+    crass (1.0.6)
+    debug (1.9.1)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
+    drb (2.2.0)
+      ruby2_keywords
+    erb_lint (0.5.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
+    erubi (1.12.0)
+    i18n (1.14.1)
+      concurrent-ruby (~> 1.0)
+    io-console (0.7.2)
+    irb (1.11.1)
+      rdoc
+      reline (>= 0.4.2)
+    json (2.7.1)
+    language_server-protocol (3.17.0.3)
+    loofah (2.22.0)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.12.0)
+    minitest (5.20.0)
+    multi_json (1.15.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
+    nio4r (2.7.0)
+    nokogiri (1.16.0-x86_64-linux)
+      racc (~> 1.4)
+    parallel (1.24.0)
+    parser (3.3.0.2)
+      ast (~> 2.4.1)
+      racc
+    psych (5.1.2)
+      stringio
+    puma (6.4.0)
+      nio4r (~> 2.0)
+    racc (1.7.3)
+    rack (2.2.8)
+    rack-protection (3.1.0)
+      rack (~> 2.2, >= 2.2.4)
+    rails-dom-testing (2.2.0)
+      activesupport (>= 5.0.0)
+      minitest
+      nokogiri (>= 1.6)
+    rails-html-sanitizer (1.6.0)
+      loofah (~> 2.21)
+      nokogiri (~> 1.14)
+    rainbow (3.1.1)
+    rdoc (6.6.2)
+      psych (>= 4.0.0)
+    redcarpet (3.6.0)
+    regexp_parser (2.9.0)
+    reline (0.4.2)
+      io-console (~> 0.5)
+    rexml (3.2.6)
+    rubocop (1.59.0)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
+      parallel (~> 1.10)
+      parser (>= 3.2.2.4)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.30.0)
+      parser (>= 3.2.1.0)
+    ruby-progressbar (1.13.0)
+    ruby2_keywords (0.0.5)
+    sinatra (3.1.0)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.1.0)
+      tilt (~> 2.0)
+    sinatra-contrib (3.1.0)
+      multi_json
+      mustermann (~> 3.0)
+      rack-protection (= 3.1.0)
+      sinatra (= 3.1.0)
+      tilt (~> 2.0)
+    smart_properties (1.17.0)
+    sqlite3 (1.7.0-x86_64-linux)
+    stringio (3.1.0)
+    tilt (2.3.0)
+    timeout (0.4.1)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    unicode-display_width (2.5.0)
+    webrick (1.8.1)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  activerecord
+  debug (>= 1.0.0)
+  erb_lint
+  puma
+  redcarpet
+  sinatra (~> 3.1)
+  sinatra-contrib
+  sqlite3
+  webrick
+
+BUNDLED WITH
+   2.4.17
