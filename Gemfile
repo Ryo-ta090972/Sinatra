@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-
 gem "sinatra", "~> 3.1"
 gem "puma"
 gem "sinatra-contrib"
