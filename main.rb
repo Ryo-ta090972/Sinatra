@@ -5,6 +5,8 @@ require 'sinatra/reloader'
 require 'net/http'
 require 'json'
 
+MEMOS_JSON_FILE = 'saved_memos.json'
+
 get '/memos' do
   @memos = read_memos
   erb :memos
@@ -92,7 +94,7 @@ def write_memos(memos)
 end
 
 def read_memos_file_path
-  File.join(Dir.pwd, 'save_memos.json')
+  File.join(File.dirname(__FILE__), MEMOS_JSON_FILE)
 end
 
 helpers do
