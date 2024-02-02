@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "sinatra", "~> 3.1"
-gem "puma"
 gem "sinatra-contrib"
 gem "webrick"
 

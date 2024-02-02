@@ -60,7 +60,6 @@ GEM
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
-    nio4r (2.7.0)
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     parallel (1.24.0)
@@ -69,8 +68,6 @@ GEM
       racc
     psych (5.1.2)
       stringio
-    puma (6.4.0)
-      nio4r (~> 2.0)
     racc (1.7.3)
     rack (2.2.8)
     rack-protection (3.1.0)
@@ -140,7 +137,6 @@ PLATFORMS
 DEPENDENCIES
   debug (>= 1.0.0)
   erb_lint
-  puma
   rubocop-fjord
   rubocop-rails
   sinatra (~> 3.1)
