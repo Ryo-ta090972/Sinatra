@@ -100,7 +100,7 @@ end
 def write_memos(id, title, content)
   db_params = YAML.load_file(DB_MEMO_PATH)
   connection = PG.connect(db_params)
-  connection.exec_params("INSERT INTO #{DB_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)", [id, title, content])
+  connection.exec_params("INSERT INTO #{TABLE_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)", [id, title, content])
   connection.close
 end
 
