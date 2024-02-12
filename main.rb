@@ -22,15 +22,10 @@ get '/memos' do
 end
 
 post '/memos' do
-  memos = read_memos
+  title = params[:title]
+  content = params[:content]
   uuid = SecureRandom.uuid
-
-  memos[uuid] = {
-    title: params[:title],
-    content: params[:content]
-  }
-
-  write_memos(memos)
+  write_memos(uuid, title, content)
   redirect '/memos'
 end
 
@@ -102,10 +97,11 @@ def read_memos
   transformation_memos
 end
 
-def write_memos(memos)
-  path = read_memos_file_path
-  memos_json = JSON.generate(memos)
-  File.write(path, memos_json)
+def write_memos(id, title, content)
+  db_params = YAML.load_file(DB_MEMO_PATH)
+  connection = PG.connect(db_params)
+  connection.exec_params("INSERT INTO #{DB_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)", [id, title, content])
+  connection.close
 end
 
 def read_memos_file_path
