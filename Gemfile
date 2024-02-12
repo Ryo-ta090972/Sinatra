@@ -5,6 +5,7 @@ source "https://rubygems.org"
 gem "sinatra", "~> 3.1"
 gem "sinatra-contrib"
 gem "webrick"
+gem "pg"
 
 group :development do
   gem 'rubocop-fjord', require: false

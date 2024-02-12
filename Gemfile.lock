@@ -66,6 +66,7 @@ GEM
     parser (3.3.0.2)
       ast (~> 2.4.1)
       racc
+    pg (1.5.4)
     psych (5.1.2)
       stringio
     racc (1.7.3)
@@ -137,6 +138,7 @@ PLATFORMS
 DEPENDENCIES
   debug (>= 1.0.0)
   erb_lint
+  pg
   rubocop-fjord
   rubocop-rails
   sinatra (~> 3.1)
