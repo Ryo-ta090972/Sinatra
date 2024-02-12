@@ -10,6 +10,7 @@ DB_CONFIG_PATH = File.join(File.dirname(__FILE__), 'db', 'db_config.yml')
 DB_MEMO_PATH = File.join(File.dirname(__FILE__), 'db', 'db_memo.yml')
 TABLE_MEMOS_PATH = File.join(File.dirname(__FILE__), 'db', 'table_memos.sql')
 DB_MEMO_NAME = 'db_memo'
+TABLE_MEMO_NAME = 'memos'
 
 def main
   build_environment unless is_database
@@ -91,8 +92,12 @@ not_found do
 end
 
 def read_memos
-  path = read_memos_file_path
-  File.exist?(path) ? JSON.parse(File.read(path)) : {}
+  db_params = YAML.load_file(DB_MEMO_PATH)
+  connection = PG.connect(db_params)
+  result = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
+  result.each_with_object({}) do |item, new_object|
+    new_object[item["id"]] = item.reject { |key| key == "id"}
+  end
 end
 
 def write_memos(memos)
