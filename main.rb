@@ -94,10 +94,12 @@ end
 def read_memos
   db_params = YAML.load_file(DB_MEMO_PATH)
   connection = PG.connect(db_params)
-  result = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
-  result.each_with_object({}) do |item, new_object|
-    new_object[item["id"]] = item.reject { |key| key == "id"}
+  table_memos = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
+  transformation_memos = table_memos.each_with_object({}) do |row, new_object|
+    new_object[row["id"]] = row.reject { |key| key == "id"}
   end
+  connection.close
+  transformation_memos
 end
 
 def write_memos(memos)
