@@ -130,7 +130,7 @@ end
 def create_database
   db_params = YAML.load_file(DB_CONFIG_PATH)
   connection = PG.connect(db_params)
-  connection.exec("CREATE DATABASE #{DB_MEMO_NAME}")
+  connection.exec("CREATE DATABASE #{DB_MEMO_NAME} WITH TEMPLATE = template0 ENCODING 'UTF8'")
   connection.close
 end
 
