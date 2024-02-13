@@ -24,8 +24,8 @@ end
 post '/memos' do
   title = params[:title]
   content = params[:content]
-  uuid = SecureRandom.uuid
-  write_memos(uuid, title, content)
+  id = SecureRandom.uuid
+  write_memos(id, title, content)
   redirect '/memos'
 end
 
@@ -49,14 +49,10 @@ end
 
 patch '/memos/:id' do
   memos = read_memos
+  title = params[:new_title]
+  content = params[:new_content]
   id = params[:id]
-
-  memos[id] = {
-    title: params[:new_title],
-    content: params[:new_content]
-  }
-
-  write_memos(memos)
+  update_memos(id, title, content)
   redirect '/memos'
 end
 
@@ -101,6 +97,13 @@ def write_memos(id, title, content)
   db_params = YAML.load_file(DB_MEMO_PATH)
   connection = PG.connect(db_params)
   connection.exec_params("INSERT INTO #{TABLE_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)", [id, title, content])
+  connection.close
+end
+
+def update_memos(id, title, content)
+  db_params = YAML.load_file(DB_MEMO_PATH)
+  connection = PG.connect(db_params)
+  connection.exec_params("UPDATE #{TABLE_MEMO_NAME} SET title = $2, content = $3 WHERE id = $1", [id, title, content])
   connection.close
 end
 
