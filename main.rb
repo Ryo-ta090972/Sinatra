@@ -58,9 +58,8 @@ end
 
 delete '/memos/:id' do
   memos = read_memos
-  targeted_id = params[:id]
-  deleted_memos = memos.except(targeted_id)
-  write_memos(deleted_memos)
+  id = params[:id]
+  delete_memos(id)
   redirect '/memos'
 end
 
@@ -104,6 +103,13 @@ def update_memos(id, title, content)
   db_params = YAML.load_file(DB_MEMO_PATH)
   connection = PG.connect(db_params)
   connection.exec_params("UPDATE #{TABLE_MEMO_NAME} SET title = $2, content = $3 WHERE id = $1", [id, title, content])
+  connection.close
+end
+
+def delete_memos(id)
+  db_params = YAML.load_file(DB_MEMO_PATH)
+  connection = PG.connect(db_params)
+  connection.exec_params("DELETE FROM #{TABLE_MEMO_NAME} WHERE id = $1", [id])
   connection.close
 end
 
