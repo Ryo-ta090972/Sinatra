@@ -16,15 +16,15 @@
 
 ### userの設定方法
 
-postgreSQLをインストール後、ターミナルで下記コマンドを実行する。
+postgreSQLをインストール後、ターミナルで下記コマンドを実行し、ユーザー`memo`を作成する。
 ```
 createuser -P memo
 ```
 
-このコマンドを実行後、パスワード設定のプロンプトが表示されるので、パスワードは`pass`で設定する。
+このコマンドを実行後、パスワード設定のプロンプトが表示されるので、パスワードを`pass`で設定する。
 ```
-Enter password for new role:
-Enter it again:
+Enter password for new role: pass #このpassはターミナルで表示されない
+Enter it again: pass #もう一度passを入力
 ```
 
 ### データベースの作成方法
