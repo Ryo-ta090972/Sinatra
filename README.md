@@ -71,7 +71,7 @@ db_memo=# GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE memos TO memo;
 1. 作業PCの任意の作業ディレクトリで`git clone` をしてください。
 
 ```
-$ git clone -b memo https://github.com/自分のアカウント名/memo_app.git
+$ git clone -b db https://github.com/自分のアカウント名/memo_app.git
 ```
 
 2. `memo_app`ディレクトリが作成されますので、`memo_app`ディレクトリに移動してください。
