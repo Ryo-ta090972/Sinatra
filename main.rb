@@ -6,15 +6,10 @@ require 'net/http'
 require 'pg'
 require 'yaml'
 
-DB_CONFIG_PATH = File.join(File.dirname(__FILE__), 'db', 'db_config.yml')
 DB_MEMO_PATH = File.join(File.dirname(__FILE__), 'db', 'db_memo.yml')
 TABLE_MEMOS_PATH = File.join(File.dirname(__FILE__), 'db', 'table_memos.sql')
 DB_MEMO_NAME = 'db_memo'
 TABLE_MEMO_NAME = 'memos'
-
-def main
-  build_environment unless is_database
-end
 
 get '/memos' do
   @memos = read_memos
@@ -79,34 +74,6 @@ not_found do
   erb :not_found
 end
 
-def build_environment
-  create_database
-  create_table
-end
-
-def is_database
-  db_params = YAML.load_file(DB_CONFIG_PATH)
-  connection = PG.connect(db_params)
-  exists = connection.exec("SELECT datname FROM pg_database WHERE datname = \'#{DB_MEMO_NAME}\'").num_tuples > 0
-  connection.close
-  exists
-end
-
-def create_database
-  db_params = YAML.load_file(DB_CONFIG_PATH)
-  connection = PG.connect(db_params)
-  connection.exec("CREATE DATABASE #{DB_MEMO_NAME} WITH TEMPLATE = template0 ENCODING 'UTF8'")
-  connection.close
-end
-
-def create_table
-  db_params = YAML.load_file(DB_MEMO_PATH)
-  sql_command_for_create_table = File.read(TABLE_MEMOS_PATH).gsub(/\n/, '')
-  connection = PG.connect(db_params)
-  connection.exec(sql_command_for_create_table)
-  connection.close
-end
-
 def read_memos
   db_params = YAML.load_file(DB_MEMO_PATH)
   connection = PG.connect(db_params)
@@ -144,5 +111,3 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 end
-
-main
