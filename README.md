@@ -86,43 +86,13 @@ $ cd memo_app/
 $ gem install bundler
 ```
 
-4. Gemfileの雛形を作成してくだささい。
-
-```
-$ bundle init
-```
-
-5. Gemfileに下記を記述してください。
-
-```
-$ vi Gemfile
-```
-
-```
-# frozen_string_literal: true
-
-source "https://rubygems.org"
-
-gem "sinatra", "~> 3.1"
-gem "sinatra-contrib"
-gem "webrick"
-gem "pg"
-
-group :development do
-  gem 'rubocop-fjord', require: false
-  gem 'rubocop-rails', require: false
-  gem 'erb_lint', require: false
-  gem "debug", ">= 1.0.0"
-end
-```
-
-6. Gemfileに記述したgemをインストールしてください。
+4. gemをインストールしてください。
 
 ```
 $ bundle install --path vendor/bundle
 ```
 
-7. メモアプリを起動してください。
+5. メモアプリを起動してください。
 
 ```
 $ bundle exec ruby main.rb
@@ -146,13 +116,13 @@ Use Ctrl-C to stop
 ```
 
 
-8. ブラウザを開いて、メモアプリにアクセスしてください。
+6. ブラウザを開いて、メモアプリにアクセスしてください。
 
 ```
 http://localhost:4567/memos
 ```
 
-9. アクセス出来たら、メモアプリが利用できます。
+7. アクセス出来たら、メモアプリが利用できます。
 
 # その他
 
