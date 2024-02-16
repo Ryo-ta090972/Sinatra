@@ -9,6 +9,64 @@
 - Ruby 3.2.2+
 
 # 手順
+## DBの環境設定
+### postgreSQLのインストール
+
+[参考記事](https://lets.postgresql.jp/map/install)を参考に、postgreSQLをインストールする
+
+### userの設定方法
+
+postgreSQLをインストール後、ターミナルで下記コマンドを実行する。
+```
+createuser -P memo
+```
+
+このコマンドを実行後、パスワード設定のプロンプトが表示されるので、パスワードは`pass`で設定する。
+```
+Enter password for new role:
+Enter it again:
+```
+
+### データベースの作成方法
+
+データベースにアクセスする。
+```
+sudo -u postgres psql
+```
+
+ユーザー名が`memo`でデータベース`db_memo`を作成する。
+また、エンコーディングは`UTF8`を指定する。
+```
+postgres=# CREATE DATABASE db_memo WITH OWNER memo ENCODING 'UTF8' TEMPLATE template0;
+```
+
+### テーブルを作成する
+
+`db_memo`のデータベースに移動する。
+```
+postgres=# \c db_memo
+```
+
+テーブル`memos`を作成する。
+```
+db_memo=# CREATE TABLE Memos (
+  id VARCHAR PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  content VARCHAR NOT NULL,
+  UNIQUE (id)
+);
+```
+
+### 権限を付与する
+
+ユーザー`memo`がテーブル`memos`に対して削除、更新、追加ができるように権限を付与する。
+```
+db_memo=# GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE memos TO memo;
+```
+
+以上でDBの環境設定は完了。
+
+## memoアプリの環境設定
 
 1. 作業PCの任意の作業ディレクトリで`git clone` をしてください。
 
@@ -46,12 +104,16 @@ $ vi Gemfile
 source "https://rubygems.org"
 
 gem "sinatra", "~> 3.1"
-gem "puma"
 gem "sinatra-contrib"
-gem "redcarpet"
 gem "webrick"
-gem 'rubocop-fjord', require: false
-gem 'erb_lint', require: false
+gem "pg"
+
+group :development do
+  gem 'rubocop-fjord', require: false
+  gem 'rubocop-rails', require: false
+  gem 'erb_lint', require: false
+  gem "debug", ">= 1.0.0"
+end
 ```
 
 6. Gemfileに記述したgemをインストールしてください。
