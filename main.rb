@@ -7,7 +7,6 @@ require 'pg'
 require 'yaml'
 
 DB_MEMO_PATH = File.join(File.dirname(__FILE__), 'db', 'db_memo.yml')
-DB_MEMO_NAME = 'db_memo'
 TABLE_MEMO_NAME = 'memos'
 
 get '/memos' do
