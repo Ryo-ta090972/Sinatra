@@ -73,8 +73,7 @@ not_found do
 end
 
 def read_memos
-  db_params = YAML.load_file(DB_CONNECTION_SETTING_FILE)
-  connection = PG.connect(db_params)
+  connection = PG.connect(db_config)
   table_memos = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
   transformation_memos = table_memos.each_with_object({}) do |row, new_object|
     new_object[row['id']] = row.reject { |key| key == 'id' }
@@ -84,25 +83,26 @@ def read_memos
 end
 
 def insert_memos(id, title, content)
-  db_params = YAML.load_file(DB_CONNECTION_SETTING_FILE)
-  connection = PG.connect(db_params)
+  connection = PG.connect(db_config)
   connection.exec_params("INSERT INTO #{TABLE_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)",
                          [id, title, content])
   connection.close
 end
 
 def update_memos(id, title, content)
-  db_params = YAML.load_file(DB_CONNECTION_SETTING_FILE)
-  connection = PG.connect(db_params)
+  connection = PG.connect(db_config)
   connection.exec_params("UPDATE #{TABLE_MEMO_NAME} SET title = $2, content = $3 WHERE id = $1", [id, title, content])
   connection.close
 end
 
 def delete_memos(id)
-  db_params = YAML.load_file(DB_CONNECTION_SETTING_FILE)
-  connection = PG.connect(db_params)
+  connection = PG.connect(db_config)
   connection.exec_params("DELETE FROM #{TABLE_MEMO_NAME} WHERE id = $1", [id])
   connection.close
+end
+
+def db_config
+  YAML.load_file(DB_CONNECTION_SETTING_FILE)
 end
 
 helpers do
