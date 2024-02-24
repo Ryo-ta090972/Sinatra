@@ -9,11 +9,69 @@
 - Ruby 3.2.2+
 
 # 手順
+## DBの環境設定
+### postgreSQLのインストール
+
+[参考記事](https://lets.postgresql.jp/map/install)を参考に、postgreSQLをインストールする
+
+### userの設定方法
+
+postgreSQLをインストール後、ターミナルで下記コマンドを実行し、ユーザー`memo`を作成する。
+```
+createuser -P memo
+```
+
+このコマンドを実行後、パスワード設定のプロンプトが表示されるので、パスワードを`pass`で設定する。
+```
+Enter password for new role: pass #このpassはターミナルで表示されない
+Enter it again: pass #もう一度passを入力
+```
+
+### データベースの作成方法
+
+データベースにアクセスする。
+```
+sudo -u postgres psql
+```
+
+ユーザー名が`memo`でデータベース`db_memo`を作成する。
+また、エンコーディングは`UTF8`を指定する。
+```
+postgres=# CREATE DATABASE db_memo WITH OWNER memo ENCODING 'UTF8' TEMPLATE template0;
+```
+
+### テーブルを作成する
+
+`db_memo`のデータベースに移動する。
+```
+postgres=# \c db_memo
+```
+
+テーブル`memos`を作成する。
+```
+db_memo=# CREATE TABLE Memos (
+  id VARCHAR PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  content VARCHAR NOT NULL,
+  UNIQUE (id)
+);
+```
+
+### 権限を付与する
+
+ユーザー`memo`がテーブル`memos`に対して削除、更新、追加ができるように権限を付与する。
+```
+db_memo=# GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE memos TO memo;
+```
+
+以上でDBの環境設定は完了。
+
+## memoアプリの環境設定
 
 1. 作業PCの任意の作業ディレクトリで`git clone` をしてください。
 
 ```
-$ git clone -b memo https://github.com/自分のアカウント名/memo_app.git
+$ git clone -b db https://github.com/自分のアカウント名/memo_app.git
 ```
 
 2. `memo_app`ディレクトリが作成されますので、`memo_app`ディレクトリに移動してください。
@@ -28,39 +86,13 @@ $ cd memo_app/
 $ gem install bundler
 ```
 
-4. Gemfileの雛形を作成してくだささい。
-
-```
-$ bundle init
-```
-
-5. Gemfileに下記を記述してください。
-
-```
-$ vi Gemfile
-```
-
-```
-# frozen_string_literal: true
-
-source "https://rubygems.org"
-
-gem "sinatra", "~> 3.1"
-gem "puma"
-gem "sinatra-contrib"
-gem "redcarpet"
-gem "webrick"
-gem 'rubocop-fjord', require: false
-gem 'erb_lint', require: false
-```
-
-6. Gemfileに記述したgemをインストールしてください。
+4. gemをインストールしてください。
 
 ```
 $ bundle install --path vendor/bundle
 ```
 
-7. メモアプリを起動してください。
+5. メモアプリを起動してください。
 
 ```
 $ bundle exec ruby main.rb
@@ -84,16 +116,15 @@ Use Ctrl-C to stop
 ```
 
 
-8. ブラウザを開いて、メモアプリにアクセスしてください。
+6. ブラウザを開いて、メモアプリにアクセスしてください。
 
 ```
 http://localhost:4567/memos
 ```
 
-9. アクセス出来たら、メモアプリが利用できます。
+7. アクセス出来たら、メモアプリが利用できます。
 
 # その他
 
 - `rubocop-fjord` の設定方法は[こちら](https://github.com/fjordllc/rubocop-fjord)を参照してください。
 - `erb_lint` の設定方法は[こちら](https://github.com/Shopify/erb-lint)を参照してください。
-
