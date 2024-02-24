@@ -75,11 +75,10 @@ end
 def read_memos
   connection = PG.connect(db_config)
   table_memos = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
-  transformation_memos = table_memos.each_with_object({}) do |row, new_object|
+  connection.close
+  table_memos.each_with_object({}) do |row, new_object|
     new_object[row['id']] = row.reject { |key| key == 'id' }
   end
-  connection.close
-  transformation_memos
 end
 
 def insert_memos(id, title, content)
