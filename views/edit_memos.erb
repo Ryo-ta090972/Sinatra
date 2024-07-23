@@ -1,6 +1,6 @@
  <form method="post" action="/memos/<%= @id %>">
   <input type="hidden" name="_method" value="PATCH">
-  <p><input type="text" id="new_title" name="new_title" value="<%= h @old_title %>" required></p>
+  <p><input type="text" id="new_title" name="new_title" value="<%= h @old_title %>" autocomplete="off" required></p>
   <p><textarea id="new_content" name="new_content"><%= h @old_content %></textarea></p>
   <p><input type="submit" value="変更" id="edit" name="edit"></p>
 </form>

@@ -3,9 +3,11 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'net/http'
-require 'json'
+require 'pg'
+require 'yaml'
 
-MEMOS_JSON_FILE = 'saved_memos.json'
+DB_CONNECTION_SETTING_FILE = File.join(File.dirname(__FILE__), 'db', 'db_memo.yml')
+TABLE_MEMO_NAME = 'memos'
 
 get '/memos' do
   @memos = read_memos
@@ -13,15 +15,10 @@ get '/memos' do
 end
 
 post '/memos' do
-  memos = read_memos
-  uuid = SecureRandom.uuid
-
-  memos[uuid] = {
-    title: params[:title],
-    content: params[:content]
-  }
-
-  write_memos(memos)
+  title = params[:title]
+  content = params[:content]
+  id = SecureRandom.uuid
+  insert_memos(id, title, content)
   redirect '/memos'
 end
 
@@ -44,23 +41,16 @@ get '/memos/:id' do
 end
 
 patch '/memos/:id' do
-  memos = read_memos
+  title = params[:new_title]
+  content = params[:new_content]
   id = params[:id]
-
-  memos[id] = {
-    title: params[:new_title],
-    content: params[:new_content]
-  }
-
-  write_memos(memos)
+  update_memos(id, title, content)
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  memos = read_memos
-  targeted_id = params[:id]
-  deleted_memos = memos.except(targeted_id)
-  write_memos(deleted_memos)
+  id = params[:id]
+  delete_memos(id)
   redirect '/memos'
 end
 
@@ -83,18 +73,35 @@ not_found do
 end
 
 def read_memos
-  path = read_memos_file_path
-  File.exist?(path) ? JSON.parse(File.read(path)) : {}
+  connection = PG.connect(db_config)
+  table_memos = connection.exec("SELECT * FROM #{TABLE_MEMO_NAME}")
+  connection.close
+  table_memos.each_with_object({}) do |row, new_object|
+    new_object[row['id']] = row.reject { |key| key == 'id' }
+  end
 end
 
-def write_memos(memos)
-  path = read_memos_file_path
-  memos_json = JSON.generate(memos)
-  File.write(path, memos_json)
+def insert_memos(id, title, content)
+  connection = PG.connect(db_config)
+  connection.exec_params("INSERT INTO #{TABLE_MEMO_NAME} (id, title, content) VALUES ($1, $2, $3)",
+                         [id, title, content])
+  connection.close
 end
 
-def read_memos_file_path
-  File.join(File.dirname(__FILE__), MEMOS_JSON_FILE)
+def update_memos(id, title, content)
+  connection = PG.connect(db_config)
+  connection.exec_params("UPDATE #{TABLE_MEMO_NAME} SET title = $2, content = $3 WHERE id = $1", [id, title, content])
+  connection.close
+end
+
+def delete_memos(id)
+  connection = PG.connect(db_config)
+  connection.exec_params("DELETE FROM #{TABLE_MEMO_NAME} WHERE id = $1", [id])
+  connection.close
+end
+
+def db_config
+  YAML.load_file(DB_CONNECTION_SETTING_FILE)
 end
 
 helpers do

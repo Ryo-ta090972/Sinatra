@@ -128,4 +128,3 @@ http://localhost:4567/memos
 
 - `rubocop-fjord` の設定方法は[こちら](https://github.com/fjordllc/rubocop-fjord)を参照してください。
 - `erb_lint` の設定方法は[こちら](https://github.com/Shopify/erb-lint)を参照してください。
-
